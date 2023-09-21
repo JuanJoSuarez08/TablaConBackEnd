@@ -1,0 +1,260 @@
+USE [Proyecto]
+GO
+/****** Object:  Table [dbo].[Compras]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Compras](
+	[CompraID] [int] IDENTITY(1,1) NOT NULL,
+	[UserID] [int] NOT NULL,
+	[ProductoID] [int] NOT NULL,
+	[FechaCompra] [datetime] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[CompraID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Productos]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Productos](
+	[ProductoID] [int] IDENTITY(1,1) NOT NULL,
+	[Nombre] [varchar](100) NOT NULL,
+	[Descripcion] [varchar](500) NULL,
+	[Precio] [decimal](10, 2) NOT NULL,
+	[Stock] [int] NOT NULL,
+	[Imagen] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ProductoID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Usuarios]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Usuarios](
+	[UserID] [int] IDENTITY(1,1) NOT NULL,
+	[Nombre] [varchar](50) NOT NULL,
+	[Email] [varchar](100) NOT NULL,
+	[Contraseña] [varchar](100) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[UserID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Compras] ADD  DEFAULT (getdate()) FOR [FechaCompra]
+GO
+ALTER TABLE [dbo].[Compras]  WITH CHECK ADD FOREIGN KEY([ProductoID])
+REFERENCES [dbo].[Productos] ([ProductoID])
+GO
+ALTER TABLE [dbo].[Compras]  WITH CHECK ADD FOREIGN KEY([UserID])
+REFERENCES [dbo].[Usuarios] ([UserID])
+GO
+/****** Object:  StoredProcedure [dbo].[Actualizar_C]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Actualizar_C]
+@CompraID int,
+@UserID INT,
+@ProductoID INT,
+@FechaCompra DATETIME
+AS
+BEGIN
+Update Compras set UserID = @UserID, ProductoID = @ProductoID, FechaCompra = @FechaCompra where CompraID = @CompraID
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Actualizar_P]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Actualizar_P]
+@ProductoID int,
+@Nombre VARCHAR(100),
+@Descripcion VARCHAR(500),
+@Precio DECIMAL(10, 2),
+@Stock INT,
+@Imagen varchar(100)
+
+AS
+BEGIN
+update Productos set Nombre = @Nombre, Descripcion = @Descripcion, Precio = @Precio, Stock = @Stock, Imagen=@Imagen where ProductoID = @ProductoID
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Actualizar_Us]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Actualizar_Us]
+@UserID int,
+@Nombre varchar(50),
+@Email varchar (100),
+@Contraseña varchar(100)
+AS
+BEGIN
+update Usuarios set Nombre = @Nombre, Email = @Email, Contraseña = @Contraseña where UserID = @UserID
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Consultar_C]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Consultar_C]
+@CompraID INT
+AS
+BEGIN
+select * from Compras
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Consultar_P]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Consultar_P]
+@ProductoID int
+AS
+BEGIN
+select * from Productos where ProductoID = @ProductoID;
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Consultar_Us]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[Consultar_Us]
+@UserID int
+AS
+BEGIN
+select * from Usuarios;
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Eliminar_C]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Eliminar_C]
+@CompraID INT
+AS 
+BEGIN
+delete from Compras where CompraID = @CompraID
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Eliminar_P]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Eliminar_P]
+@ProductoID int
+AS
+BEGIN
+delete from Productos where ProductoID = @ProductoID
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Eliminar_Us]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Eliminar_Us]
+@UserID int
+AS
+BEGIN
+delete from Usuarios where UserID = @UserID
+END 
+GO
+/****** Object:  StoredProcedure [dbo].[Listar_C]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Listar_C]
+
+AS
+BEGIN
+select * from Compras
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Listar_P]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Listar_P]
+AS
+BEGIN
+select * from Productos
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Listar_Us]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Listar_Us]
+AS
+BEGIN
+select * from Usuarios;
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Registrar_C]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Registrar_C]
+@UserID INT,
+@ProductoID INT,
+@FechaCompra DATETIME
+AS
+BEGIN
+insert into Compras(UserID,ProductoID,FechaCompra) values (@UserID,@ProductoID,@FechaCompra)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Registrar_P]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Registrar_P]
+@Nombre VARCHAR(100),
+@Descripcion VARCHAR(500),
+@Precio DECIMAL(10, 2),
+@Stock INT,
+@Imagen varchar(100)
+
+AS
+BEGIN
+Insert into Productos (Nombre,Descripcion,Precio,Stock,Imagen) values (@Nombre,@Descripcion,@Precio,@Stock,@Imagen)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Registrar_Us]    Script Date: 19/09/2023 8:10:54 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Registrar_Us]
+@Nombre varchar(50),
+@Email varchar (100),
+@Contraseña varchar(100)
+AS
+BEGIN
+insert into Usuarios(Nombre,Email,Contraseña) values (@Nombre,@Email,@Contraseña)
+END
+GO
