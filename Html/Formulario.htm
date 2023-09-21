@@ -9,11 +9,13 @@
 <body>
     <form action="" class="form-register" id="form">
 
-        <h4>Formulario Registro</h4>
+        <h4>Registrar Producto</h4>
     <input class="controls" type="text" name="Nombre" id="Nombre" placeholder="Ingrese el Nombre">
-    <input class="controls" type="text" name="Descripcion" id="Descripcion" placeholder="Ingrese la Descripcion">
+    <textarea name="Descripcion" id="Descripcion" cols="30" rows="10" placeholder="Escriba la descripcion del producto"></textarea>
     <input class="controls" type="text" name="Precio" id="Precio" placeholder="Ingrese el Precio">
     <input class="controls" type="text" name="Stock" id="Stock" placeholder="Ingrese el Stock">
+    <input type="file" name="Imagen" id="Imagen" accept="Image/jpeg">
+    <div id="ImagenOriginal"></div>
     <p>Estoy de acuerdo con <a href="#">Terminos y Condiciones</a></p>
     <input class="botons" type="submit" value="Registrar">
     <p><a href="#">¿Ya tengo Cuenta?</a></p>

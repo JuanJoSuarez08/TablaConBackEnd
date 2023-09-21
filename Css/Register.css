@@ -5,7 +5,7 @@
   }
   
   body {
-    background-image: url('fondo.jpg');
+    background-image: url('../Img/Fondo.jpg');
   }
   
   .form-register {
@@ -25,7 +25,7 @@
     margin-bottom: 20px;
   }
   
-  .controls {
+  .controls, textarea{
     width: 100%;
     background: #24303c;
     padding: 10px;

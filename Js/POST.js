@@ -5,7 +5,7 @@ document.getElementById("form").addEventListener("submit", function(event) {
     var Nombre = document.getElementById("Nombre").value;
     var Descripcion = document.getElementById("Descripcion").value;
     var Precio = document.getElementById("Precio").value;
-    var Stock = document.getElementById("Stock").value;
+    var Stock = document.getElementById("Stock").value; 
 
   
     // Crear un objeto de datos JSON que deseas enviar
